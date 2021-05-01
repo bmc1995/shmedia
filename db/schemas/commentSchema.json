@@ -1,0 +1,43 @@
+{
+  "commentSchema": {
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": [
+        "user_id",
+        "username",
+        "text",
+        "post_id",
+        "parent_comnt_id",
+        "subcomments"
+      ],
+      "properties": {
+        "user_id": {
+          "bsonType": ["objectId"],
+          "description": "must be an objectId and is required"
+        },
+        "text": {
+          "bsonType": ["string"],
+          "description": "must be a string and is required"
+        },
+        "post_id": {
+          "bsonType": ["objectId"],
+          "description": "must be an objectId and is required"
+        },
+        "username": {
+          "bsonType": ["string"],
+          "description": "must be a string and is required"
+        },
+        "parent_comnt_id": {
+          "bsonType": ["null", "objectId"],
+          "description": "must be null OR objectId and is required"
+        },
+        "subcomments": {
+          "bsonType": "array",
+          "items": {
+            "bsonType": "objectId"
+          }
+        }
+      }
+    }
+  }
+}

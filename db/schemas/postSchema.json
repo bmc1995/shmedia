@@ -1,0 +1,49 @@
+{
+  "postSchema": {
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": [
+        "media_url",
+        "user_id",
+        "username",
+        "video",
+        "profilePic_url",
+        "recent_comnts"
+      ],
+      "properties": {
+        "user_id": {
+          "bsonType": "objectId",
+          "description": "must be an objectId and is required"
+        },
+        "username": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "profilePic_url": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "video": {
+          "bsonType": "bool",
+          "description": "must be a boolean and is required"
+        },
+        "comments": {
+          "bsonType": "array",
+          "items": {
+            "bsonType": "object",
+            "description": "array items must be objects"
+          },
+          "description": "must be an array and is required."
+        },
+        "media_url": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "caption": {
+          "bsonType": "string",
+          "description": "must be a string"
+        }
+      }
+    }
+  }
+}

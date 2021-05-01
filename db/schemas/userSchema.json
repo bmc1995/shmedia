@@ -1,0 +1,102 @@
+{
+  "userSchema": {
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": [
+        "first_name",
+        "last_name",
+        "username",
+        "birthdate",
+        "profilePic_url",
+        "followers",
+        "bio",
+        "recent_posts",
+        "location",
+        "private"
+      ],
+      "properties": {
+        "first_name": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "last_name": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "username": {
+          "bsonType": "string",
+          "description": "must be a string and is required"
+        },
+        "birthdate": {
+          "bsonType": "date",
+          "description": "must be a date and is required"
+        },
+        "profilePic_url": {
+          "bsonType": ["string", "null"],
+          "description": "must be a string if not null"
+        },
+        "followers": {
+          "bsonType": "object",
+          "description": "must be an object and is required",
+          "required": ["pendIn", "pendOut", "current"],
+          "properties": {
+            "pendIn": {
+              "bsonType": "array",
+              "items": {
+                "bsonType": "objectId",
+                "description": "array may only contain objectId's"
+              }
+            },
+            "pendOut": {
+              "bsonType": "array",
+              "items": {
+                "bsonType": "objectId",
+                "description": "array may only contain objectId's"
+              }
+            },
+            "current": {
+              "bsonType": "array",
+              "items": {
+                "bsonType": "objectId",
+                "description": "array may only contain objectId's"
+              }
+            }
+          }
+        },
+        "bio": {
+          "bsonType": ["string", "null"],
+          "description": "must be a string and is required"
+        },
+        "recent_posts": {
+          "bsonType": "array",
+          "items": {
+            "bsonType": "object",
+            "description": "array may only contain objects"
+          }
+        },
+        "location": {
+          "bsonType": "object",
+          "required": ["country"],
+          "properties": {
+            "country": {
+              "bsonType": "string",
+              "description": "must be a string and is required"
+            },
+            "city": {
+              "bsonType": ["string", "null"],
+              "description": "must be a string if not null"
+            },
+            "state": {
+              "bsonType": ["string", "null"],
+              "description": "must be a string if not null"
+            }
+          }
+        },
+        "private": {
+          "bsonType": "bool",
+          "description": "must be a boolean and is required"
+        }
+      }
+    }
+  }
+}
