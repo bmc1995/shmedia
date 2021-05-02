@@ -107,6 +107,16 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
+    test(
+      "POST '/sendFollowReq' will add recipient ID to user's pendOut and user ID to recipient's pendIn"
+    );
+    test(
+      "POST '/acceptFollowReq' will move ID from pendIn or PendOut to current for both users"
+    );
+    test(
+      "POST '/declineFollowReq' will remove ID from pendIn or Pendout for both users"
+    );
+
     test("POST '/delete/:username' will delete the specified user by username.", function (done) {
       chai
         .request(app)
@@ -264,6 +274,9 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
+    test(
+      "GET '/replies/:comment_id' will fetch all comments with comment_id as parent_comnt_id"
+    );
     test("POST '/delete/:comment_id' will delete comment specified by id", function (done) {
       chai
         .request(app)
