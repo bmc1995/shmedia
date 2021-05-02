@@ -2,7 +2,7 @@ const { assert } = require("chai");
 const { MongoClient } = require("mongodb");
 const sinon = require("sinon");
 
-const { UserDbOps } = require("../db/index");
+const { UserDbOps, PostDbOps, CommentDbOps } = require("../db/index");
 
 suite("Database Operations", function () {
   suite("#users.js", function () {
@@ -59,6 +59,132 @@ suite("Database Operations", function () {
 
       test("returns a promise", function () {
         const fake = sinon.fake(UserDbOps.userRead);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+  });
+
+  suite("#posts.js", function () {
+    suite("postCreate", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(PostDbOps.postCreate);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+
+    suite("postUpdate", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(PostDbOps.postUpdate);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+
+    suite("postDelete", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(PostDbOps.postDelete);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+        // assert.instanceOf(fake(), Promise);
+      });
+    });
+
+    suite("postRead", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(PostDbOps.postRead);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+  });
+
+  suite("#comments.js", function () {
+    suite("commentCreate", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(CommentDbOps.commentCreate);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+
+    suite("commentUpdate", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(CommentDbOps.commentUpdate);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+
+    suite("commentDelete", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(CommentDbOps.commentDelete);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+        // assert.instanceOf(fake(), Promise);
+      });
+    });
+
+    suite("commentRead", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(CommentDbOps.commentRead);
         sinon.stub(MongoClient, "connect");
 
         const returns = fake();

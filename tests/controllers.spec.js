@@ -14,14 +14,12 @@ suite("Controllers", function () {
 
       test("returns a promise", function () {
         //prevent registerNewUser from calling services
-        //we are only testing the behavior of this unit.
         sinon.stub(UserServices, "createUser");
 
         assert.instanceOf(UserControllers.registerNewUser(), Promise);
       });
 
       test("calls createUser service", function () {
-        //need to access the stub this time.
         let createUserStub = sinon.stub(UserServices, "createUser");
 
         UserControllers.registerNewUser({ body: "test" });

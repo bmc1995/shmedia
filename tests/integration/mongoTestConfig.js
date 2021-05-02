@@ -1,4 +1,3 @@
-const { MongoClient } = require("mongodb");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const { Connection } = require("../../db/connection");
 
