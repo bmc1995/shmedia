@@ -23,7 +23,29 @@ async function getComment(comment_id) {
     });
 }
 
+async function updateComment(comment_id, updatedFields) {
+  return await CommentDbOps.commentUpdate(comment_id, updatedFields)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
+async function deleteComment(comment_id) {
+  return await CommentDbOps.commentDelete(comment_id)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
 module.exports = {
   createComment,
   getComment,
+  updateComment,
+  deleteComment,
 };

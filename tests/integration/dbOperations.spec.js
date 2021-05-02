@@ -198,7 +198,7 @@ suite("Routes and Controllers", function () {
           expect(res.body.value._id).to.eql(post_id);
         })
         .then(() => {
-          //Verify user no longer exists after operation.
+          //Verify post no longer exists after operation.
           chai
             .request(app)
             .get(`/posts/${post_id}`)
@@ -247,7 +247,45 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
-    test("POST '/edit/:comment_id' will edit comment specified by id");
-    test("POST '/delete/:comment_id' will delete comment specified by id");
+    test("POST '/edit/:comment_id' will edit comment specified by id", function (done) {
+      chai
+        .request(app)
+        .post(`/comments/edit/${comment_id}`)
+        .send({
+          updates: {
+            text: "Hi world, comment updated.",
+          },
+        })
+        .end((err, res) => {
+          expect(res).status(200);
+          expect(res.body.value).to.include({
+            text: "Hi world, comment updated.",
+          });
+          done(err);
+        });
+    });
+    test("POST '/delete/:comment_id' will delete comment specified by id", function (done) {
+      chai
+        .request(app)
+        .post(`/comments/delete/${comment_id}`)
+        .then(function (res) {
+          expect(res).to.have.status(200);
+          expect(res.body.lastErrorObject.n).eqls(1);
+          expect(res.body.value._id).to.eql(comment_id);
+        })
+        .then(() => {
+          //Verify comment no longer exists after operation.
+          chai
+            .request(app)
+            .get(`/comments/${comment_id}`)
+            .end((err, res) => {
+              expect(res.body).to.be.empty;
+              done(err);
+            });
+        })
+        .catch((err) => {
+          done(err);
+        });
+    });
   });
 });

@@ -5,7 +5,7 @@ async function commentDelete(comment_id) {
   return await Connection.client
     .db(process.env.MONGO_DB)
     .collection("comments")
-    .findOneAndDelete(comment_id)
+    .findOneAndDelete({ _id: comment_id })
     .then((result) => {
       return Promise.resolve(result);
     })
