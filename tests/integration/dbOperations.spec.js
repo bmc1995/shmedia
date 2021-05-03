@@ -65,6 +65,17 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
+    test("POST Writes to the users collection will throw Error if username is not unique.", function (done) {
+      chai
+        .request(app)
+        .post("/users/register")
+        .send(body)
+        .end(function (err, res) {
+          // console.log(res)
+          expect(res).to.have.status(500)
+          done(err);
+        });
+    });
 
     test("GET '/:username' will retrieve the specified user's data by username", function (done) {
       chai
