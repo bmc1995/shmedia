@@ -17,19 +17,6 @@ app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
 
 suite("Routes and Controllers", function () {
-  //INDEX ROUTES
-  // suite("index", function () {
-  //   test("GET '/' works", function (done) {
-  //     chai
-  //       .request(app)
-  //       .get("/")
-  //       .end(function (error, res) {
-  //         assert.strictEqual(res.status, 200);
-  //         done(error);
-  //       });
-  //   });
-  // });
-  // USERS ROUTES
   suiteSetup(async () => {
     await MMS.start().catch((err) => Promise.reject(err));
   });
@@ -38,6 +25,7 @@ suite("Routes and Controllers", function () {
     MMS.stop().catch((err) => Promise.reject(err));
   });
 
+  // USERS ROUTES
   suite("Users", async function () {
     const body = {
       userData: {
@@ -72,7 +60,7 @@ suite("Routes and Controllers", function () {
         .send(body)
         .end(function (err, res) {
           // console.log(res)
-          expect(res).to.have.status(500)
+          expect(res).to.have.status(500);
           done(err);
         });
     });
@@ -154,6 +142,7 @@ suite("Routes and Controllers", function () {
         });
     });
   });
+  // POSTS ROUTES
   suite("Posts", function () {
     const body = {
       postData: {
@@ -233,6 +222,7 @@ suite("Routes and Controllers", function () {
         });
     });
   });
+  // COMMENTS ROUTES
   suite("Comments", function () {
     const body = {
       commentData: {
@@ -268,6 +258,16 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
+    test("GET '/:comment_id' will get replies/subcomments if they exist", function (done) {
+      chai
+        .request(app)
+        .get(`/comments/${comment_id}`)
+        .end((err, res) => {
+          expect(res).status(200);
+          expect(res.body[0]).to.deep.contain(body.commentData);
+          done(err);
+        });
+    });
     test("POST '/edit/:comment_id' will edit comment specified by id", function (done) {
       chai
         .request(app)
@@ -285,9 +285,6 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
-    test(
-      "GET '/replies/:comment_id' will fetch all comments with comment_id as parent_comnt_id"
-    );
     test("POST '/delete/:comment_id' will delete comment specified by id", function (done) {
       chai
         .request(app)

@@ -7,11 +7,13 @@ const createPost = async (req, res, next) => {
       res.status(201).json(result);
     })
     .catch((err) => {
+      //TODO add error handling middleware
       res.sendStatus(500) && next(err);
     });
 };
 
 async function getPost(req, res, next) {
+  //need to turn post_id into an ObjectId for mongodb to recognize in search (string on client-side)
   const post_id = ObjectId(req.params.post_id);
   await PostServices.getPost(post_id)
     .then((result) => {
@@ -22,7 +24,6 @@ async function getPost(req, res, next) {
     });
 }
 async function deletePost(req, res, next) {
-  //need to turn post_id into an ObjectId for mongodb to recognize in search
   const post_id = ObjectId(req.params.post_id);
   await PostServices.deletePost(post_id)
     .then((result) => {
@@ -34,7 +35,6 @@ async function deletePost(req, res, next) {
 }
 
 async function updatePost(req, res, next) {
-  //need to turn post_id into an ObjectId for mongodb to recognize in search
   const post_id = ObjectId(req.params.post_id);
   await PostServices.updatePost(post_id, req.body.updates)
     .then((result) => {
