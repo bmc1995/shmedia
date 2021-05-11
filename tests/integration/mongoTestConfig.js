@@ -1,6 +1,37 @@
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const { Connection } = require("../../db/connection");
 
+const userData = {
+  user1: {
+    first_name: "TESTuser1",
+    last_name: "TESTmcc",
+    username: "TESTuser1",
+    birthdate: new Date("10/22/1995").toISOString(),
+    location: {
+      country: "United States",
+    },
+    followers: {
+      pendIn: [],
+      pendOut: [],
+      current: [],
+    },
+  },
+  user2: {
+    first_name: "TESTuser2",
+    last_name: "TESTmcc",
+    username: "TESTuser2",
+    birthdate: new Date("10/22/1995").toISOString(),
+    location: {
+      country: "United States",
+    },
+    followers: {
+      pendIn: [],
+      pendOut: [],
+      current: [],
+    },
+  },
+};
+
 const mongoServer = new MongoMemoryServer();
 
 /**
@@ -29,6 +60,14 @@ const start = async () => {
         { parent_comnt_id: 1 },
         { partialFilterExpression: { parent_comnt_id: { $type: "objectId" } } }
       );
+    //populate users
+    await Connection.client
+      .db("test")
+      .collection("users")
+      .insertMany([userData.user1, userData.user2])
+      .catch((err) => {
+        console.log(err);
+      });
   });
 };
 

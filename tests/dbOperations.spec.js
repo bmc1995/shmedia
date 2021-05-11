@@ -66,6 +66,21 @@ suite("Database Operations", function () {
         assert.instanceOf(returns, Promise);
       });
     });
+
+    suite("userSendFollowReq", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(UserDbOps.userSendFollowReq);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
   });
 
   suite("#posts.js", function () {

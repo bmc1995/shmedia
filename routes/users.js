@@ -6,6 +6,9 @@ const {
   getUser,
   deleteUser,
   updateUser,
+  userSendFollowReq,
+  userAcceptFollowReq,
+  userDeclineFollowReq,
 } = require("../controllers/users");
 
 /* POST create user */
@@ -19,5 +22,11 @@ router.post("/delete/:username", deleteUser);
 
 //TODO
 router.post("/edit/:username", updateUser);
+
+router.post("/sendFollowReq", userSendFollowReq);
+
+router.post("/acceptFollowReq", userAcceptFollowReq);
+
+router.post("/declineFollowReq", userDeclineFollowReq);
 
 module.exports = router;

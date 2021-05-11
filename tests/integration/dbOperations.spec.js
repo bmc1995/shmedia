@@ -44,7 +44,7 @@ suite("Routes and Controllers", function () {
         .post("/users/register")
         .send(body)
         .end(function (err, res) {
-          // console.log(res)
+          // console.log(res.body);
           expect(res)
             .to.have.status(201)
             .and.property("body")
@@ -61,6 +61,7 @@ suite("Routes and Controllers", function () {
         .end(function (err, res) {
           // console.log(res)
           expect(res).to.have.status(500);
+          expect(res.body).eql(11000);
           done(err);
         });
     });
@@ -106,15 +107,68 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
-    test(
-      "POST '/sendFollowReq' will add recipient ID to user's pendOut and user ID to recipient's pendIn"
-    );
-    test(
-      "POST '/acceptFollowReq' will move ID from pendIn or PendOut to current for both users"
-    );
-    test(
-      "POST '/declineFollowReq' will remove ID from pendIn or Pendout for both users"
-    );
+    test("POST '/sendFollowReq' will add recipient ID to user's pendOut and user ID to recipient's pendIn", function (done) {
+      chai
+        .request(app)
+        .post("/users/sendFollowReq")
+        .send({
+          userData: {
+            sender_id: "TESTuser1",
+            receiver_id: "TESTuser2",
+          },
+        })
+        .end((err, res) => {
+          expect(res).status(200);
+          expect(res.body.nMatched).to.equal(2);
+          expect(res.body.nModified).to.equal(2);
+          done(err);
+        });
+    });
+    test("POST '/acceptFollowReq' will move ID from pendIn or PendOut to current for both users", function (done) {
+      chai
+        .request(app)
+        .post("/users/acceptFollowReq")
+        .send({
+          userData: {
+            receiver_id: "TESTuser2",
+            sender_id: "TESTuser1",
+          },
+        })
+        .end((err, res) => {
+          expect(res).status(200);
+          expect(res.body.nMatched).to.equal(2);
+          expect(res.body.nModified).to.equal(2);
+          done(err);
+        });
+    });
+    test("POST '/declineFollowReq' will remove ID from pendIn or Pendout for both users", function (done) {
+      chai
+        .request(app)
+        .post("/users/sendFollowReq")
+        .send({
+          userData: {
+            sender_id: "TESTuser1",
+            receiver_id: "TESTuser2",
+          },
+        })
+        .then(() => {
+          chai
+            .request(app)
+            .post("/users/declineFollowReq")
+            .send({
+              userData: {
+                receiver_id: "TESTuser2",
+                sender_id: "TESTuser1",
+              },
+            })
+            .end((err, res) => {
+              expect(res).status(200);
+              expect(res.body.nMatched).to.equal(2);
+              expect(res.body.nModified).to.equal(2);
+              done(err);
+            });
+        });
+    });
 
     test("POST '/delete/:username' will delete the specified user by username.", function (done) {
       chai

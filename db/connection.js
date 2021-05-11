@@ -22,6 +22,7 @@ Connection.client = null;
 Connection.uri = encodeURI(process.env.MONGO_URI);
 Connection.options = {
   useUnifiedTopology: true,
+  maxPoolSize: 100,
 };
 
 module.exports = {

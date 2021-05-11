@@ -43,9 +43,42 @@ async function updateUser(username, updates) {
     });
 }
 
+async function sendFollowReq(sender_id, receiver_id) {
+  return await UserDbOps.userSendFollowReq(sender_id, receiver_id)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
+async function acceptFollowReq(sender_id, receiver_id) {
+  return await UserDbOps.userAcceptFollowReq(sender_id, receiver_id)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
+async function declineFollowReq(sender_id, receiver_id) {
+  return await UserDbOps.userDeclineFollowReq(sender_id, receiver_id)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
 module.exports = {
   createUser,
   deleteUser,
   getUserInfo,
   updateUser,
+  sendFollowReq,
+  acceptFollowReq,
+  declineFollowReq,
 };
