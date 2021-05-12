@@ -7,8 +7,7 @@ const registerNewUser = async (req, res, next) => {
       res.status(201).json(result);
     })
     .catch((err) => {
-      res.status(500).json(err.code);
-      //  && next(err); -- TODO error handling
+      res.status(500).json(err.code) && next(err);
     });
 };
 
