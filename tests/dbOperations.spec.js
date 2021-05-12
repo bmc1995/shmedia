@@ -81,6 +81,51 @@ suite("Database Operations", function () {
         assert.instanceOf(returns, Promise);
       });
     });
+
+    suite("userAcceptFollowReq", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(UserDbOps.userAcceptFollowReq);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+
+    suite("userDeclineFollowReq", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(UserDbOps.userDeclineFollowReq);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
+
+    suite("userUnfollow", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(UserDbOps.userUnfollow);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+    });
   });
 
   suite("#posts.js", function () {

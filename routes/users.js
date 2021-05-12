@@ -9,6 +9,7 @@ const {
   userSendFollowReq,
   userAcceptFollowReq,
   userDeclineFollowReq,
+  userUnfollow,
 } = require("../controllers/users");
 
 /* POST create user */
@@ -28,5 +29,7 @@ router.post("/sendFollowReq", userSendFollowReq);
 router.post("/acceptFollowReq", userAcceptFollowReq);
 
 router.post("/declineFollowReq", userDeclineFollowReq);
+
+router.post("/unfollow", userUnfollow);
 
 module.exports = router;

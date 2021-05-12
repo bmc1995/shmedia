@@ -73,6 +73,16 @@ async function declineFollowReq(sender_id, receiver_id) {
     });
 }
 
+async function unfollowUser(user, targetUser) {
+  return await UserDbOps.userUnfollow(user, targetUser)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
 module.exports = {
   createUser,
   deleteUser,
@@ -81,4 +91,5 @@ module.exports = {
   sendFollowReq,
   acceptFollowReq,
   declineFollowReq,
+  unfollowUser,
 };

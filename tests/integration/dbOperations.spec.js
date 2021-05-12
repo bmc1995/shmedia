@@ -170,6 +170,24 @@ suite("Routes and Controllers", function () {
         });
     });
 
+    test("POST '/unfollow' will pull target user from user's followers.current array", function (done) {
+      chai
+        .request(app)
+        .post("/users/unfollow")
+        .send({
+          userData: {
+            user: "TESTuser2",
+            targetUser: "TESTuser1",
+          },
+        })
+        .end((err, res) => {
+          expect(res).status(200);
+          expect(res.body.matchedCount).to.equal(1, "matchedCount");
+          expect(res.body.modifiedCount).to.equal(1, "modifiedCount");
+          done(err);
+        });
+    });
+
     test("POST '/delete/:username' will delete the specified user by username.", function (done) {
       chai
         .request(app)

@@ -5,6 +5,7 @@ const { userUpdate } = require("./userUpdate");
 const { userSendFollowReq } = require("./userSendFollowReq");
 const { userAcceptFollowReq } = require("./userAcceptFollowReq");
 const { userDeclineFollowReq } = require("./userDeclineFollowReq");
+const { userUnfollow } = require("./userUnfollow");
 
 module.exports = {
   userCreate,
@@ -14,4 +15,5 @@ module.exports = {
   userSendFollowReq,
   userAcceptFollowReq,
   userDeclineFollowReq,
+  userUnfollow,
 };

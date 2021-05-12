@@ -80,6 +80,19 @@ async function userDeclineFollowReq(req, res, next) {
     });
 }
 
+async function userUnfollow(req, res, next) {
+  const user = req.body.userData.user;
+  const targetUser = req.body.userData.targetUser;
+
+  await UserServices.unfollowUser(user, targetUser)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.sendStatus(500) && next(err);
+    });
+}
+
 module.exports = {
   registerNewUser,
   getUser,
@@ -88,4 +101,5 @@ module.exports = {
   userSendFollowReq,
   userAcceptFollowReq,
   userDeclineFollowReq,
+  userUnfollow,
 };
