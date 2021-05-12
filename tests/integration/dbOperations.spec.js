@@ -15,6 +15,12 @@ app.use(express.json());
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
+app.use(function (err, req, res, next) {
+  //dont log if MongoError for test readability.
+  if (err.name == "MongoError") {
+    null;
+  }
+});
 
 suite("Routes and Controllers", function () {
   suiteSetup(async () => {
