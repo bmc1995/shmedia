@@ -277,28 +277,43 @@ suite("Routes and Controllers", function () {
         });
     });
     test("POST '/delete/:post_id will delete specified post and associated comments from database", function (done) {
-      this.skip();
       chai
         .request(app)
-        .post(`/posts/delete/${post_id}`)
-        .then(function (res) {
-          expect(res).to.have.status(200);
-          expect(res.body.lastErrorObject.n).eqls(1);
-          expect(res.body.value._id).to.eql(post_id);
+        .post("/comments/create")
+        .send({
+          commentData: {
+            user_id: "1",
+            text: "hi world this is a test reply.",
+            post_id: `${post_id}`,
+            username: "TESTforname",
+            parent_comnt_id: null,
+            subcomments: [],
+          },
         })
         .then(() => {
-          //Verify post no longer exists after operation.
           chai
             .request(app)
-            .get(`/posts/${post_id}`)
-            .end((err, res) => {
-              expect(res.body).to.be.empty;
+            .post(`/posts/delete/${post_id}`)
+            .then(function (res) {
+              expect(res).to.have.status(200);
+              expect(res.body.postResult.deletedCount).eqls(1);
+              expect(res.body.commentResult.deletedCount).to.eql(1);
+            })
+            .then(() => {
+              //Verify post no longer exists after operation.
+              chai
+                .request(app)
+                .get(`/posts/${post_id}`)
+                .end((err, res) => {
+                  expect(res.body).to.be.empty;
+                  done(err);
+                });
+            })
+            .catch((err) => {
               done(err);
             });
         })
-        .catch((err) => {
-          done(err);
-        });
+        .catch((err) => done(err));
     });
   });
   // COMMENTS ROUTES
