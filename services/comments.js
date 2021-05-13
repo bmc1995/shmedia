@@ -1,4 +1,5 @@
 const { CommentDbOps } = require("../db/index");
+const { populateSubcomments } = require("./helpers/comments");
 const { CommentServiceHelpers } = require("./helpers/index");
 
 async function createComment(commentData) {
@@ -16,7 +17,8 @@ async function createComment(commentData) {
 async function getComment(comment_id) {
   return await CommentDbOps.commentRead(comment_id)
     .then((result) => {
-      return Promise.resolve(result);
+      const comment = populateSubcomments(comment_id, result);
+      return Promise.resolve(comment);
     })
     .catch((err) => {
       return Promise.reject(err);

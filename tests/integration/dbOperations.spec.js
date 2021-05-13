@@ -276,7 +276,8 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
-    test("POST '/delete/:post_id will delete specified post from database", function (done) {
+    test("POST '/delete/:post_id will delete specified post and associated comments from database", function (done) {
+      this.skip();
       chai
         .request(app)
         .post(`/posts/delete/${post_id}`)
@@ -332,19 +333,35 @@ suite("Routes and Controllers", function () {
         .get(`/comments/${comment_id}`)
         .end((err, res) => {
           expect(res).status(200);
-          expect(res.body[0]).to.deep.contain(body.commentData);
+          expect(res.body).to.deep.contain(body.commentData);
           done(err);
         });
     });
     test("GET '/:comment_id' will get replies/subcomments if they exist", function (done) {
       chai
         .request(app)
-        .get(`/comments/${comment_id}`)
-        .end((err, res) => {
-          expect(res).status(200);
-          expect(res.body[0]).to.deep.contain(body.commentData);
-          done(err);
-        });
+        .post("/comments/create")
+        .send({
+          commentData: {
+            user_id: "1",
+            text: "hi world this is a test reply.",
+            post_id: "1",
+            username: "TESTforname",
+            parent_comnt_id: `${comment_id}`,
+            subcomments: [],
+          },
+        })
+        .then(() => {
+          chai
+            .request(app)
+            .get(`/comments/${comment_id}`)
+            .end((err, res) => {
+              expect(res).status(200);
+              expect(res.body.subcomments.length).to.be.gte(1);
+              done(err);
+            });
+        })
+        .catch((err) => console.log(err));
     });
     test("POST '/edit/:comment_id' will edit comment specified by id", function (done) {
       chai
@@ -363,17 +380,16 @@ suite("Routes and Controllers", function () {
           done(err);
         });
     });
-    test("POST '/delete/:comment_id' will delete comment specified by id", function (done) {
+    test("POST '/delete/:comment_id' will delete comment specified by id, along with any subcomments", function (done) {
       chai
         .request(app)
         .post(`/comments/delete/${comment_id}`)
         .then(function (res) {
           expect(res).to.have.status(200);
-          expect(res.body.lastErrorObject.n).eqls(1);
-          expect(res.body.value._id).to.eql(comment_id);
+          expect(res.body.deletedCount).eql(2);
         })
         .then(() => {
-          //Verify comment no longer exists after operation.
+          //Verify comment and subcomments no longer exist after operation.
           chai
             .request(app)
             .get(`/comments/${comment_id}`)

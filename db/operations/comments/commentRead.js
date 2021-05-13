@@ -5,7 +5,9 @@ async function commentRead(comment_id) {
   return await Connection.client
     .db(process.env.MONGO_DB)
     .collection("comments")
-    .find({ _id: comment_id })
+    .find({
+      $or: [{ _id: comment_id }, { parent_comnt_id: String(comment_id) }],
+    })
     .toArray()
     .then((result) => {
       return Promise.resolve(result);

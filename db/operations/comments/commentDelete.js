@@ -5,7 +5,9 @@ async function commentDelete(comment_id) {
   return await Connection.client
     .db(process.env.MONGO_DB)
     .collection("comments")
-    .findOneAndDelete({ _id: comment_id })
+    .deleteMany({
+      $or: [{ _id: comment_id }, { parent_comnt_id: String(comment_id) }],
+    })
     .then((result) => {
       return Promise.resolve(result);
     })
