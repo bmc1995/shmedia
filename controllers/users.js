@@ -1,5 +1,9 @@
 const { ObjectId } = require("bson");
-const { UserServices } = require("../services/index");
+const {
+  UserServices,
+  CommentServices,
+  PostServices,
+} = require("../services/index");
 
 const registerNewUser = async (req, res, next) => {
   await UserServices.createUser(req.body.userData)
@@ -22,14 +26,22 @@ async function getUser(req, res, next) {
 }
 async function deleteUser(req, res, next) {
   await UserServices.deleteUser(req.params.username)
-    .then((result) => {
-      res.json(result);
+    .then(async (userResult) => {
+      await CommentServices.deleteCommentsByUser(req.params.username).then(
+        async (commentsResult) => {
+          await PostServices.deletePostsByUser(req.params.username).then(
+            (postResult) => {
+              res.json({ userResult, commentsResult, postResult });
+            }
+          );
+        }
+      );
     })
     .catch((err) => {
       res.sendStatus(500) && next(err);
     });
 }
-
+//TODO delete all posts and comments from user.
 async function updateUser(req, res, next) {
   await UserServices.updateUser(req.params.username, req.body.updates)
     .then((result) => {

@@ -194,24 +194,47 @@ suite("Routes and Controllers", function () {
         });
     });
 
-    test("POST '/delete/:username' will delete the specified user by username.", function (done) {
+    test("POST '/delete/:username' will delete the specified user by username along with all posts and comments by them.", function (done) {
       chai
         .request(app)
-        .post("/users/delete/TESTbillmcc")
-        .then(function (res) {
-          expect(res)
-            .to.have.status(200)
-            .with.property("body")
-            .which.contains({ ok: 1 });
-          // console.log(res.body);
+        .post("/posts/create")
+        .send({
+          postData: {
+            user_id: "1",
+            username: "TESTbillmcc",
+            profilePic_url: "",
+            video: true,
+            comments: [],
+            media_url: "",
+            caption: "hi world this is a test.",
+          },
+        })
+        .then(async (postCreateResult) => {
+          await chai
+            .request(app)
+            .post("/comments/create")
+            .send({
+              commentData: {
+                user_id: "1",
+                text: "hi world this is a test reply.",
+                post_id: "2",
+                username: "TESTbillmcc",
+                parent_comnt_id: null,
+                subcomments: [],
+              },
+            });
         })
         .then(() => {
-          //Verify user no longer exists after operation.
+          //Verify user, along with their posts and comments, no longer exists.
           chai
             .request(app)
-            .get("/users/TESTbillmcc")
-            .end((err, res) => {
-              expect(res.body).to.be.null;
+            .post("/users/delete/TESTbillmcc")
+            .end(function (err, res) {
+              console.log(res.body);
+              expect(res).to.have.status(200);
+              expect(res.body.userResult).to.contain({ deletedCount: 1 });
+              expect(res.body.commentsResult).to.contain({ deletedCount: 1 });
+              expect(res.body.postResult).to.contain({ deletedCount: 1 });
               done(err);
             });
         })

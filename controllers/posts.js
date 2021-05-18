@@ -13,7 +13,7 @@ const createPost = async (req, res, next) => {
 };
 
 async function getPost(req, res, next) {
-  //need to turn post_id into an ObjectId for mongodb to recognize in search (string on client-side)
+  //need to turn post_id into an ObjectId for mongodb to recognize in search (is string on client-side)
   const post_id = ObjectId(req.params.post_id);
   await PostServices.getPost(post_id)
     .then((result) => {

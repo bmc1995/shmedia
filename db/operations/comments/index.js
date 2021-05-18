@@ -3,6 +3,7 @@ const { commentRead } = require("./commentRead");
 const { commentUpdate } = require("./commentUpdate");
 const { commentDelete } = require("./commentDelete");
 const { commentDeleteAllByPost } = require("./commentDeleteAllByPost");
+const { commentDeleteAllByUser } = require("./commentDeleteAllByUser");
 
 module.exports = {
   commentCreate,
@@ -10,4 +11,5 @@ module.exports = {
   commentUpdate,
   commentDelete,
   commentDeleteAllByPost,
+  commentDeleteAllByUser,
 };

@@ -1,11 +1,11 @@
 require("dotenv").config();
 const { Connection } = require("../../connection");
 
-async function userDelete(username) {
+async function postDeleteAllByUser(username) {
   return await Connection.client
     .db(process.env.MONGO_DB)
-    .collection("users")
-    .deleteOne({ username: username })
+    .collection("posts")
+    .deleteMany({ username: username })
     .then((result) => {
       return Promise.resolve(result);
     })
@@ -13,5 +13,4 @@ async function userDelete(username) {
       return Promise.reject(err);
     });
 }
-
-module.exports = { userDelete };
+module.exports = { postDeleteAllByUser };

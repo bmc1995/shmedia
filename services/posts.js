@@ -43,4 +43,20 @@ async function deletePost(post_id) {
     });
 }
 
-module.exports = { createPost, getPost, updatePost, deletePost };
+async function deletePostsByUser(username) {
+  return await PostDbOps.postDeleteAllByUser(username)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
+module.exports = {
+  createPost,
+  getPost,
+  updatePost,
+  deletePost,
+  deletePostsByUser,
+};

@@ -46,7 +46,17 @@ async function deleteComment(comment_id) {
 }
 
 async function deleteCommentsByPost(post_id) {
-  return await CommentDbOps.commentDeleteAllByPost([post_id])
+  return await CommentDbOps.commentDeleteAllByPost(post_id)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
+async function deleteCommentsByUser(username) {
+  return await CommentDbOps.commentDeleteAllByUser(username)
     .then((result) => {
       return Promise.resolve(result);
     })
@@ -61,4 +71,5 @@ module.exports = {
   updateComment,
   deleteComment,
   deleteCommentsByPost,
+  deleteCommentsByUser,
 };
