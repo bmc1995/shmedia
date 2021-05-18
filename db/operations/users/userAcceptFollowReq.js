@@ -6,8 +6,6 @@ async function userAcceptFollowReq(sender_id, receiver_id) {
     .db(process.env.MONGO_DB)
     .collection("users")
     .bulkWrite([
-      // { deleteOne: { filter: { username: sender_id } } },
-      // { deleteOne: { filter: { username: receiver_id } } },
       {
         updateOne: {
           filter: { username: sender_id },
