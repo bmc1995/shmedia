@@ -308,7 +308,30 @@ suite("Services", function () {
         assert.instanceOf(stub.args[0][0], ObjectId);
       });
     });
+
+    suite("- deletePostsByUser", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+      test("returns a promise", function () {
+        //Arrange
+        let fake = sinon.fake(PostServices.deletePostsByUser);
+        //Act
+        let returns = fake();
+        //Assert
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a username is passed to postDeleteAllByUser.js", function () {
+        let stub = sinon.stub(PostDbOps, "postDeleteAllByUser");
+
+        PostServices.deletePostsByUser("username");
+
+        assert.isDefined(stub.args[0][0]);
+      });
+    });
   });
+  //deletePostsByUser
 
   suite("#comments.js", function () {
     suite("- createComment", function () {
@@ -413,7 +436,52 @@ suite("Services", function () {
         assert.instanceOf(stub.args[0][0], ObjectId);
       });
     });
+    //deleteCommentsByUser
+    suite("- deleteCommentsByUser", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+      test("returns a promise", function () {
+        //Arrange
+        let fake = sinon.fake(CommentServices.deleteCommentsByUser);
+        //Act
+        let returns = fake();
+        //Assert
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a username is passed to commentDeleteAllByUser.js", function () {
+        let stub = sinon.stub(CommentDbOps, "commentDeleteAllByUser");
+
+        CommentServices.deleteCommentsByUser("username");
+
+        assert.isDefined(stub.args[0][0]);
+      });
+    });
+    suite("- deleteCommentsByPost", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+      test("returns a promise", function () {
+        //Arrange
+        let fake = sinon.fake(CommentServices.deleteCommentsByPost);
+        //Act
+        let returns = fake();
+        //Assert
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a username is passed to commentDeleteAllByPost.js", function () {
+        let stub = sinon.stub(CommentDbOps, "commentDeleteAllByPost");
+
+        CommentServices.deleteCommentsByPost("username");
+
+        assert.isDefined(stub.args[0][0]);
+      });
+    });
   });
+
+  //deleteCommentsByPost
 
   suite("./helpers", function () {
     suite("- prepareNewUser", function () {
@@ -501,7 +569,3 @@ suite("Services", function () {
     });
   });
 });
-
-//deleteCommentsByUser
-//deleteCommentsByPost
-//deletePostsByUser
