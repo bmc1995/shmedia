@@ -175,6 +175,22 @@ suite("Database Operations", function () {
       });
     });
 
+    suite("postDeleteAllByUser", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(PostDbOps.postDeleteAllByUser);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+        // assert.instanceOf(fake(), Promise);
+      });
+    });
+
     suite("postRead", function () {
       teardown(function () {
         sinon.restore();
@@ -229,6 +245,38 @@ suite("Database Operations", function () {
 
       test("returns a promise", function () {
         const fake = sinon.fake(CommentDbOps.commentDelete);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+        // assert.instanceOf(fake(), Promise);
+      });
+    });
+
+    suite("commentDeleteAllByUser", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(CommentDbOps.commentDeleteAllByUser);
+        sinon.stub(MongoClient, "connect");
+
+        const returns = fake();
+
+        assert.instanceOf(returns, Promise);
+        // assert.instanceOf(fake(), Promise);
+      });
+    });
+
+    suite("commentDeleteAllByPost", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        const fake = sinon.fake(CommentDbOps.commentDeleteAllByPost);
         sinon.stub(MongoClient, "connect");
 
         const returns = fake();
