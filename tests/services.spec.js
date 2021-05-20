@@ -13,6 +13,7 @@ const {
 } = require("../services/helpers/index");
 const { UserDbOps, PostDbOps, CommentDbOps } = require("../db/index");
 const { ObjectId } = require("bson");
+const { stub } = require("sinon");
 
 suite("Services", function () {
   suite("#users.js", function () {
@@ -114,6 +115,94 @@ suite("Services", function () {
         UserServices.deleteUser("bill");
 
         assert.typeOf(stub.args[0][0], "string");
+      });
+    });
+    suite("- sendFollowReq", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        let fake = sinon.fake(UserServices.sendFollowReq);
+
+        let returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a sender_id and receiver_id are passed to userSendFollowReq.js", function () {
+        let stub = sinon.stub(UserDbOps, "userSendFollowReq");
+
+        UserServices.sendFollowReq(100, 200);
+
+        assert.isDefined(stub.args[0][0]);
+        assert.isDefined(stub.args[0][1]);
+      });
+    });
+    suite("- acceptFollowReq", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        let fake = sinon.fake(UserServices.acceptFollowReq);
+
+        let returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a sender_id and receiver_id are passed to userAcceptFollowReq.js", function () {
+        let stub = sinon.stub(UserDbOps, "userAcceptFollowReq");
+
+        UserServices.acceptFollowReq(100, 200);
+
+        assert.isDefined(stub.args[0][0]);
+        assert.isDefined(stub.args[0][1]);
+      });
+    });
+    suite("- declineFollowReq", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        let fake = sinon.fake(UserServices.declineFollowReq);
+
+        let returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a sender_id and receiver_id are passed to userDeclineFollowReq.js", function () {
+        let stub = sinon.stub(UserDbOps, "userDeclineFollowReq");
+
+        UserServices.declineFollowReq(100, 200);
+
+        assert.isDefined(stub.args[0][0]);
+        assert.isDefined(stub.args[0][1]);
+      });
+    });
+    suite("- unfollowUser", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns a promise", function () {
+        let fake = sinon.fake(UserServices.unfollowUser);
+
+        let returns = fake();
+
+        assert.instanceOf(returns, Promise);
+      });
+
+      test("a user and targetUser are passed to userSendFollowReq.js", function () {
+        let stub = sinon.stub(UserDbOps, "userUnfollow");
+
+        UserServices.unfollowUser(100, 200);
+
+        assert.isDefined(stub.args[0][0]);
+        assert.isDefined(stub.args[0][1]);
       });
     });
   });
@@ -379,5 +468,40 @@ suite("Services", function () {
         assert.typeOf(returnVal, "object");
       });
     });
+
+    suite("- populateSubcomments", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      test("returns an object", function () {
+        const returnVal = CommentServiceHelpers.populateSubcomments(100, [
+          {
+            _id: 100,
+            user_id: "1",
+            text: "hi world this is a test comment.",
+            post_id: "1",
+            username: "TESTforname",
+            parent_comnt_id: null,
+            subcomments: [],
+          },
+          {
+            _id: 101,
+            user_id: "2",
+            text: "hi world this is a test reply.",
+            post_id: "1",
+            username: "TESTforname",
+            parent_comnt_id: 100,
+            subcomments: [],
+          },
+        ]);
+
+        assert.typeOf(returnVal, "object");
+      });
+    });
   });
 });
+
+//deleteCommentsByUser
+//deleteCommentsByPost
+//deletePostsByUser

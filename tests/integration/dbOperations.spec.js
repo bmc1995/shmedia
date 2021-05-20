@@ -230,7 +230,6 @@ suite("Routes and Controllers", function () {
             .request(app)
             .post("/users/delete/TESTbillmcc")
             .end(function (err, res) {
-              console.log(res.body);
               expect(res).to.have.status(200);
               expect(res.body.userResult).to.contain({ deletedCount: 1 });
               expect(res.body.commentsResult).to.contain({ deletedCount: 1 });
