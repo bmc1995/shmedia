@@ -481,8 +481,6 @@ suite("Services", function () {
     });
   });
 
-  //deleteCommentsByPost
-
   suite("./helpers", function () {
     suite("- prepareNewUser", function () {
       teardown(function () {
@@ -565,6 +563,24 @@ suite("Services", function () {
         ]);
 
         assert.typeOf(returnVal, "object");
+      });
+    });
+
+    suite("prepareS3Upload", function () {
+      teardown(function () {
+        sinon.restore();
+      });
+
+      returnVal = PostServiceHelpers.prepareS3Upload(
+        { user_id: 1, video: false },
+        "cats.txt"
+      );
+      test("returns an object", function () {
+        assert.typeOf(returnVal, "object");
+      });
+
+      test("returned object has Bucket, Key, and Body keys", function () {
+        assert.hasAllKeys(returnVal, ["Bucket", "Key", "Body"]);
       });
     });
   });
