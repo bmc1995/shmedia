@@ -4,7 +4,7 @@ async function uploadtoS3(preparedData) {
   const client = new S3Client();
   const command = new PutObjectCommand({
     Bucket: "shmedia-media",
-    Key: preparedData.key,
+    Key: preparedData.Key,
     Body: preparedData.Body,
   });
 
