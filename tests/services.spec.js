@@ -566,14 +566,22 @@ suite("Services", function () {
       });
     });
 
-    suite("prepareS3Upload", function () {
+    suite("- prepareS3Upload", function () {
       teardown(function () {
         sinon.restore();
       });
+      const fs = require("fs");
+      const Utils = require("../utils/");
 
-      returnVal = PostServiceHelpers.prepareS3Upload(
-        { user_id: 1, video: false },
-        "cats.txt"
+      sinon.stub(fs, "readFileSync");
+      sinon.stub(Utils, "determineFileFormat");
+
+      let returnVal = PostServiceHelpers.prepareS3Upload(
+        {
+          user_id: 1,
+          video: false,
+        },
+        "fakepath"
       );
       test("returns an object", function () {
         assert.typeOf(returnVal, "object");
