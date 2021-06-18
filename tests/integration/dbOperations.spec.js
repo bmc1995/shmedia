@@ -3,11 +3,11 @@ const MMS = require("./mongoTestConfig");
 //no auth during tests
 const sinon = require("sinon");
 const jwtchecker = require("../../middleware/checkJwt");
-const jwtCheckStub = sinon
-  .stub(jwtchecker, "checkJwt")
-  .callsFake((req, res, next) => {
-    next();
-  });
+// const jwtCheckStub = sinon
+//   .stub(jwtchecker, "checkJwt")
+//   .callsFake((req, res, next) => {
+//     next();
+//   });
 
 const runUsersSuite = require("./DbOpsSuites/usersSuite.spec");
 const runPostsSuite = require("./DbOpsSuites/postsSuite.spec");

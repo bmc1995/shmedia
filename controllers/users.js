@@ -15,9 +15,10 @@ const registerNewUser = async (req, res, next) => {
 };
 
 async function getUser(req, res, next) {
+  let jwt = req.jwt;
   await UserServices.getUserInfo(req.params.username)
     .then((result) => {
-      res.json(result);
+      res.json({ result, jwt });
     })
     .catch((err) => {
       res.sendStatus(500) && next(err);

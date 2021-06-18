@@ -1,27 +1,33 @@
-const jwt = require("express-jwt");
-const jwksRsa = require("jwks-rsa");
-const jwtAuthz = require("express-jwt-authz");
-// Set up Auth0 configuration. These values should be
-// the domain and audience for the API that you want to call.
-const authConfig = {
-  domain: "https://dev-shmedia.us.auth0.com",
-  audience: "https://shmedia/api",
-};
+const OktaJwtVerifier = require("@okta/jwt-verifier");
+require("dotenv").config();
 
-// Define middleware that validates incoming bearer tokens
-// using JWKS from YOUR_DOMAIN
-const checkJwt = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 15,
-    jwksUri: `${authConfig.domain}/.well-known/jwks.json`,
-  }),
-  audience: authConfig.audience,
-  issuer: `${authConfig.domain}/`,
-  algorithms: ["RS256"],
+const oktaJwtVerifier = new OktaJwtVerifier({
+  issuer: `https://${process.env.OKTA_DOMAIN}/oauth2/default`, // required
 });
 
-// const checkScopes = (scopesArr) => jwtAuthz(scopesArr);
+function authRequired(req, res, next) {
+  const authHeader = req.headers.authorization || "";
+  const match = authHeader.match(/Bearer (.+)/);
+  // The expected audience passed to verifyAccessToken() is required, and can be either a string (direct match) or
+  // an array  of strings (the actual aud claim in the token must match one of the strings).
+  const expectedAudience = "api://default";
 
-module.exports = { checkJwt };
+  if (!match) {
+    res.status(401);
+    return next("Unauthorized");
+  }
+
+  const accessToken = match[1];
+
+  return oktaJwtVerifier
+    .verifyAccessToken(accessToken, expectedAudience)
+    .then((jwt) => {
+      req.jwt = jwt;
+      next();
+    })
+    .catch((err) => {
+      res.status(401).send(err.message);
+    });
+}
+
+module.exports = { authRequired };

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { checkJwt } = require("../middleware/checkJwt");
+const { authRequired } = require("../middleware/checkJwt");
 
 const {
   registerNewUser,
@@ -18,20 +18,20 @@ const {
 router.post("/register", registerNewUser);
 
 //GET user information
-router.get("/:username", getUser);
+router.get("/:username", authRequired, getUser);
 
 //POST delete user
-router.post("/delete/:username", checkJwt, deleteUser);
+router.post("/delete/:username", deleteUser);
 
 //TODO
-router.post("/edit/:username", checkJwt, updateUser);
+router.post("/edit/:username", updateUser);
 
-router.post("/sendFollowReq", checkJwt, userSendFollowReq);
+router.post("/sendFollowReq", userSendFollowReq);
 
-router.post("/acceptFollowReq", checkJwt, userAcceptFollowReq);
+router.post("/acceptFollowReq", userAcceptFollowReq);
 
-router.post("/declineFollowReq", checkJwt, userDeclineFollowReq);
+router.post("/declineFollowReq", userDeclineFollowReq);
 
-router.post("/unfollow", checkJwt, userUnfollow);
+router.post("/unfollow", userUnfollow);
 
 module.exports = router;
