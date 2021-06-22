@@ -1,10 +1,10 @@
 const { StringDecoder } = require("string_decoder");
 const decoderHex = new StringDecoder("hex");
 
-function determineFileFormat(buff, video = false) {
+function determineFileFormat(buff, isVideo = false) {
   let fileSignature = decoderHex.write(buff.slice(0, 2));
 
-  if (video) {
+  if (isVideo) {
     fileSignature = decoderHex.write(buff.slice(4, 12));
   }
 
