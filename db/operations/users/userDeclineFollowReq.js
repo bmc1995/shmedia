@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { Connection } = require("../../connection");
 
 async function userDeclineFollowReq(sender_id, receiver_id) {

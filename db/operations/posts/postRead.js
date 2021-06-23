@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { Connection } = require("../../connection");
 
 async function postRead(post_id) {
