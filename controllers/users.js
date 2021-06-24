@@ -3,9 +3,12 @@ const {
   CommentServices,
   PostServices,
 } = require("../services/index");
+const { oktaUpdateUser } = require("../services/okta/oktaUpdateUser");
 
 const registerNewUser = async (req, res, next) => {
-  await UserServices.createUser(req.body.userData)
+  const userIdFromEvent = req.body.data.events[0]["target"][0].id;
+
+  await UserServices.createUser(userIdFromEvent)
     .then((result) => {
       res.status(201).json(result);
     })
@@ -15,10 +18,9 @@ const registerNewUser = async (req, res, next) => {
 };
 
 async function getUser(req, res, next) {
-  let jwt = req.jwt;
   await UserServices.getUserInfo(req.params.username)
     .then((result) => {
-      res.json({ result, jwt });
+      res.json({ result });
     })
     .catch((err) => {
       res.sendStatus(500) && next(err);
@@ -41,11 +43,15 @@ async function deleteUser(req, res, next) {
       res.sendStatus(500) && next(err);
     });
 }
-//TODO delete all posts and comments from user.
+// refactor to use oktaId for both.
 async function updateUser(req, res, next) {
   await UserServices.updateUser(req.params.username, req.body.updates)
-    .then((result) => {
-      res.json(result);
+    .then(async (mongoResult) => {
+      await oktaUpdateUser(req.params.oktaId, req.body.updates).then(
+        (oktaResult) => {
+          res.json({ mongoResult, oktaResult });
+        }
+      );
     })
     .catch((err) => {
       res.sendStatus(500) && next(err);
