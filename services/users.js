@@ -1,10 +1,7 @@
 const { UserDbOps } = require("../db/index");
 const { UserServiceHelpers } = require("./helpers/index");
-const { oktaUpdateUser } = require("./okta/oktaUpdateUser");
-const { oktaUserById } = require("./okta/oktaUserById");
 
-async function createUser(userIdFromEvent) {
-  const userData = await oktaUserById(userIdFromEvent);
+async function createUser(userData) {
   const newUserObj = UserServiceHelpers.prepareNewUser(userData);
 
   return await UserDbOps.userCreate(newUserObj)
@@ -37,10 +34,6 @@ async function deleteUser(userData) {
 }
 
 async function updateUser(username, updates) {
-  await oktaUpdateUser().catch((err) => {
-    return Promise.reject(err);
-  });
-
   return await UserDbOps.userUpdate(username, updates)
     .then((result) => {
       return Promise.resolve(result);

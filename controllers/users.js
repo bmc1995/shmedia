@@ -4,13 +4,16 @@ const {
   PostServices,
 } = require("../services/index");
 const { oktaUpdateUser } = require("../services/okta/oktaUpdateUser");
+const { oktaUserById } = require("../services/okta/oktaUserById");
 
 const registerNewUser = async (req, res, next) => {
   const userIdFromEvent = req.body.data.events[0]["target"][0].id;
 
-  await UserServices.createUser(userIdFromEvent)
-    .then((result) => {
-      res.status(201).json(result);
+  await oktaUserById(userIdFromEvent)
+    .then(async (oktaUser) => {
+      await UserServices.createUser(oktaUser).then((mongoResult) => {
+        res.status(201).json(mongoResult);
+      });
     })
     .catch((err) => {
       res.status(500).json(err.code) && next(err);

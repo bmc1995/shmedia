@@ -1,5 +1,4 @@
 const fs = require("fs");
-const Utils = require("../../utils/");
 
 function prepareNewPost(postData) {
   return {
@@ -16,13 +15,13 @@ function prepareNewPost(postData) {
 function prepareS3Upload(postData, file) {
   const mediaType = postData.video ? "videos" : "images";
 
-  const binaryData = fs.readFileSync(file);
+  const binaryData = fs.createReadStream(file);
 
-  const fExtension = Utils.determineFileFormat(binaryData, postData.video);
+  // const fExtension = Utilsb.determineFileFormat(binaryData, postData.video);
 
   const preparedData = {
     Bucket: "shmedia-media",
-    Key: `users/${postData.user_id}/${mediaType}/${Date.now()}` + fExtension,
+    Key: `users/${postData.user_id}/${mediaType}/${Date.now()}`,
     Body: binaryData,
   };
 
