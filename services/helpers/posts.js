@@ -1,5 +1,4 @@
 const fs = require("fs");
-
 function prepareNewPost(postData) {
   return {
     user_id: postData.user_id,
@@ -14,17 +13,13 @@ function prepareNewPost(postData) {
 
 function prepareS3Upload(postData, file) {
   const mediaType = postData.video ? "videos" : "images";
-
   const binaryData = fs.createReadStream(file);
-
-  // const fExtension = Utilsb.determineFileFormat(binaryData, postData.video);
 
   const preparedData = {
     Bucket: "shmedia-media",
     Key: `users/${postData.user_id}/${mediaType}/${Date.now()}`,
     Body: binaryData,
   };
-
   return preparedData;
 }
 

@@ -1,6 +1,10 @@
 const { StringDecoder } = require("string_decoder");
 const decoderHex = new StringDecoder("hex");
 
+//finds the filetype by 'magic number'/file signature
+
+//figure out how to use with ReadableStream?
+
 function determineFileFormat(buff, isVideo = false) {
   let fileSignature = decoderHex.write(buff.slice(0, 2));
 
