@@ -23,8 +23,8 @@ async function getPost(post_id) {
     });
 }
 
-async function getPostsByUser(userIdArr) {
-  return await PostDbOps.postsReadByUser(userIdArr)
+async function getPostsByUsers(userIdArr) {
+  return await PostDbOps.postsReadByUsers(userIdArr)
     .then((result) => {
       return Promise.resolve(result);
     })
@@ -66,6 +66,7 @@ async function deletePostsByUser(username) {
 module.exports = {
   createPost,
   getPost,
+  getPostsByUsers,
   updatePost,
   deletePost,
   deletePostsByUser,

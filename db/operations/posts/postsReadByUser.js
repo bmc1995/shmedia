@@ -6,11 +6,11 @@ const { Connection } = require("../../connection");
  * @param {ObjectId[]} idList
  */
 
-async function postsByUserId(idList) {
+async function postsReadByUsers(idList) {
   return await Connection.client
     .db(process.env.MONGO_DB)
     .collection("posts")
-    .find({ _id: { $in: idList } })
+    .find({ user_id: { $in: idList } })
     .toArray()
     .then((result) => {
       return Promise.resolve(result);
@@ -20,4 +20,4 @@ async function postsByUserId(idList) {
     });
 }
 
-module.exports = { postsByUserId };
+module.exports = { postsReadByUsers };

@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createPost,
   getPost,
+  getPostsByUsers,
   updatePost,
   deletePost,
 } = require("../controllers/posts");
@@ -14,8 +15,8 @@ router.post("/create", createPost);
 //GET by post id
 router.get("/:post_id", getPost);
 
-// GET posts by user id('s)
-router.get("/byUsers", getPostsByUser);
+// POST posts by user id('s)
+router.post("/byUsers", getPostsByUsers);
 
 //GET all public posts (explore page?)
 // router.get("/explore", getPublicPosts);
