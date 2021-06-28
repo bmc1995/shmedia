@@ -14,6 +14,7 @@ const {
 const { UserDbOps, PostDbOps, CommentDbOps } = require("../db/index");
 const { ObjectId } = require("bson");
 const { stub } = require("sinon");
+const OktaService = require("../services/okta/oktaUserById");
 
 suite("Services", function () {
   suite("#users.js", function () {
@@ -44,6 +45,7 @@ suite("Services", function () {
 
       test("an object is passed to userCreate.js", function () {
         let stub = sinon.stub(UserDbOps, "userCreate");
+        let oktaStub = sinon.stub(OktaService, "oktaUserById");
 
         UserServices.createUser({ userData: { username: "bill" } });
 
@@ -489,11 +491,14 @@ suite("Services", function () {
 
       test("returns an object", function () {
         const testFormData = {
-          first_name: "bill",
-          last_name: "mcc",
-          birthdate: new Date("10/22/1995"),
-          location: {
-            country: "United States",
+          profile: {
+            firstName: "bill",
+            lastName: "mcc",
+            displayName: "bmcc",
+            birthdate: new Date("10/22/1995"),
+            location: {
+              country: "United States",
+            },
           },
         };
 
@@ -573,7 +578,7 @@ suite("Services", function () {
       const fs = require("fs");
       const Utils = require("../utils/");
 
-      sinon.stub(fs, "readFileSync");
+      sinon.stub(fs, "createReadStream");
       sinon.stub(Utils, "determineFileFormat");
 
       let returnVal = PostServiceHelpers.prepareS3Upload(

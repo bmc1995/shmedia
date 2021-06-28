@@ -23,6 +23,16 @@ async function getPost(post_id) {
     });
 }
 
+async function getPostsByUser(userIdArr) {
+  return await PostDbOps.postsReadByUser(userIdArr)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
 async function updatePost(post_id, updates) {
   return await PostDbOps.postUpdate(post_id, updates)
     .then((result) => {

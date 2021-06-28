@@ -23,6 +23,19 @@ async function getPost(req, res, next) {
       res.sendStatus(500) && next(err);
     });
 }
+
+// async function getPostsByUser(req, res, next) {
+//   //need to turn post_id into an ObjectId for mongodb to recognize in search (is string on client-side)
+//   const userIdArr = ObjectId(req.params.userIdArr);
+//   await PostServices.getPostsByUser(userIdArr)
+//     .then((result) => {
+//       res.json(result);
+//     })
+//     .catch((err) => {
+//       res.sendStatus(500) && next(err);
+//     });
+// }
+
 async function deletePost(req, res, next) {
   const post_id = ObjectId(req.params.post_id);
 

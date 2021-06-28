@@ -11,8 +11,14 @@ const {
 /* POST create user */
 router.post("/create", createPost);
 
-//GET posts by user id
+//GET by post id
 router.get("/:post_id", getPost);
+
+// GET posts by user id('s)
+router.get("/byUsers", getPostsByUser);
+
+//GET all public posts (explore page?)
+// router.get("/explore", getPublicPosts);
 
 // POST update post
 router.post("/edit/:post_id", updatePost);
