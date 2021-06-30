@@ -13,8 +13,6 @@ const {
 } = require("../services/helpers/index");
 const { UserDbOps, PostDbOps, CommentDbOps } = require("../db/index");
 const { ObjectId } = require("bson");
-const { stub } = require("sinon");
-const OktaService = require("../services/okta/oktaUserById");
 
 suite("Services", function () {
   suite("#users.js", function () {
@@ -45,11 +43,10 @@ suite("Services", function () {
 
       test("an object is passed to userCreate.js", function () {
         let stub = sinon.stub(UserDbOps, "userCreate");
-        let oktaStub = sinon.stub(OktaService, "oktaUserById");
 
-        UserServices.createUser({ userData: { username: "bill" } });
+        UserServices.createUser({ profile: { username: "bill" } });
 
-        assert.typeOf(stub.args[0][0], "object");
+        assert.typeOf(stub.args[0][0], "Object");
       });
     });
 

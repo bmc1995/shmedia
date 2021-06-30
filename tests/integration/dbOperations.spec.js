@@ -1,14 +1,5 @@
 const MMS = require("./mongoTestConfig");
 
-//no auth during tests
-const sinon = require("sinon");
-const jwtchecker = require("../../middleware/checkJwt");
-// const jwtCheckStub = sinon
-//   .stub(jwtchecker, "checkJwt")
-//   .callsFake((req, res, next) => {
-//     next();
-//   });
-
 const runUsersSuite = require("./DbOpsSuites/usersSuite.spec");
 const runPostsSuite = require("./DbOpsSuites/postsSuite.spec");
 const runCommentsSuite = require("./DbOpsSuites/commentsSuite.spec");
@@ -18,6 +9,7 @@ const postsRouter = require("../../routes/posts");
 const commentsRouter = require("../../routes/comments");
 
 const express = require("express");
+require("dotenv").config();
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +30,6 @@ chai.use(chaiHttp);
 
 suite("Routes and Controllers", function () {
   suiteSetup(async () => {
-    let jwtCheckStub;
     await MMS.start().catch((err) => Promise.reject(err));
   });
 

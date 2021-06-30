@@ -21,7 +21,7 @@ function prepareNewUser(userData) {
     },
     bio: null,
     posts: [], //posts populated by aggregation ($lookup)
-    location: userData.location,
+    location: userData.location || { city: null, state: null },
     okta_id: userData.id,
     private: false,
   };

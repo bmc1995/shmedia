@@ -30,6 +30,20 @@ const userData = {
       current: [],
     },
   },
+  user3: {
+    first_name: "TESTuser3",
+    last_name: "TESTmcc",
+    username: "TESTuser3",
+    birthdate: new Date("10/22/1995").toISOString(),
+    location: {
+      country: "United States",
+    },
+    followers: {
+      pendIn: [],
+      pendOut: [],
+      current: [],
+    },
+  },
 };
 
 const mongoServer = new MongoMemoryServer();
@@ -64,7 +78,7 @@ const start = async () => {
     await Connection.client
       .db("test")
       .collection("users")
-      .insertMany([userData.user1, userData.user2])
+      .insertMany([userData.user1, userData.user2, userData.user3])
       .catch((err) => {
         console.log(err);
       });

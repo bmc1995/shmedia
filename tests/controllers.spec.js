@@ -3,7 +3,8 @@ const sinon = require("sinon");
 
 const { UserControllers } = require("../controllers/index");
 const { UserServices } = require("../services/index.js");
-
+const OktaService = require("../services/okta/oktaUserById");
+//need to refactor for okta or remove controller tests if unnecessary
 suite("Controllers", function () {
   suite("#users.js", function () {
     suite("registerNewUser", function () {
@@ -17,14 +18,6 @@ suite("Controllers", function () {
         sinon.stub(UserServices, "createUser");
 
         assert.instanceOf(UserControllers.registerNewUser(), Promise);
-      });
-
-      test("calls createUser service", function () {
-        let createUserStub = sinon.stub(UserServices, "createUser");
-
-        UserControllers.registerNewUser({ body: "test" });
-
-        assert.isTrue(createUserStub.called);
       });
     });
   });

@@ -4,12 +4,12 @@ const {
   PostServices,
 } = require("../services/index");
 const { oktaUpdateUser } = require("../services/okta/oktaUpdateUser");
-const { oktaUserById } = require("../services/okta/oktaUserById");
+const OktaService = require("../services/okta/oktaUserById");
 
-const registerNewUser = async (req, res, next) => {
+async function registerNewUser(req, res, next) {
   const userIdFromEvent = req.body.data.events[0]["target"][0].id;
 
-  await oktaUserById(userIdFromEvent)
+  await OktaService.oktaUserById(userIdFromEvent)
     .then(async (oktaUser) => {
       await UserServices.createUser(oktaUser).then((mongoResult) => {
         res.status(201).json(mongoResult);
@@ -18,7 +18,7 @@ const registerNewUser = async (req, res, next) => {
     .catch((err) => {
       res.status(500).json(err.code) && next(err);
     });
-};
+}
 //need to get posts? limit to 10, getMore when needed?
 async function getUser(req, res, next) {
   await UserServices.getUserInfo(req.params.username)
