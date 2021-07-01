@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+
+const formToReq = multer();
 
 const {
   createPost,
@@ -9,8 +12,8 @@ const {
   deletePost,
 } = require("../controllers/posts");
 
-/* POST create user */
-router.post("/create", createPost);
+/* POST create post*/
+router.post("/create", formToReq.single("file"), createPost);
 
 //GET by post id
 router.get("/:post_id", getPost);

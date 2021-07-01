@@ -1,25 +1,30 @@
 const fs = require("fs");
+const { Readable } = require("stream");
 function prepareNewPost(postData) {
+  console.log("prepnew");
+
   return {
-    user_id: postData.user_id,
-    username: postData.username,
-    profilePic_url: postData.profilePic_url || "",
-    video: postData.video,
+    okta_uid: postData.body.okta_uid,
+    video: postData.body.video,
     comments: [], //comments populated by aggregation ($lookup)
-    media_url: postData.media_url,
-    caption: postData.caption || "",
+    media_url: postData.body.media_url || null,
+    caption: postData.body.caption || "",
   };
 }
 
-function prepareS3Upload(postData, file) {
-  const mediaType = postData.video ? "videos" : "images";
-  const binaryData = fs.createReadStream(file);
+function prepareS3Upload(postData) {
+  console.log(postData.body.video);
+  const mediaType = postData.body.video == "true" ? "videos" : "images";
+  const binaryData = postData.file.buffer;
 
   const preparedData = {
     Bucket: "shmedia-media",
-    Key: `users/${postData.user_id}/${mediaType}/${Date.now()}`,
+    Key: `users/${postData.body.okta_uid}/${mediaType}/${Date.now()}_${
+      postData.file.originalname
+    }`,
     Body: binaryData,
   };
+  console.log(preparedData);
   return preparedData;
 }
 

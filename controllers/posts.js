@@ -2,7 +2,8 @@ const { ObjectId } = require("bson");
 const { PostServices, CommentServices } = require("../services/index");
 
 const createPost = async (req, res, next) => {
-  await PostServices.createPost(req.body.postData)
+  console.log({ file: req.file, body: req.body });
+  await PostServices.createPost({ file: req.file, body: req.body })
     .then((result) => {
       res.status(201).json(result);
     })
