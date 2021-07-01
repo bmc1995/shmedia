@@ -15,21 +15,21 @@ async function oktaUpdateUser(id, updatedFields) {
         updatedCount += 1;
         break;
       case "username":
-        user.profile.displayName = updatedFields[attr];
+        user.profile.mongoUsername = updatedFields[attr];
         updatedCount += 1;
       default:
         break;
     }
   }
 
-  if (updatedCount) {
+  if (!updatedCount) {
     return { message: "No updates required.", updatedCount };
   }
 
   return user
     .update()
     .then((res) => {
-      return res;
+      return { res, updatedCount };
     })
     .catch((err) => {
       return err;

@@ -11,7 +11,7 @@ function prepareNewUser(userData) {
   return {
     first_name: userData.profile.firstName,
     last_name: userData.profile.lastName,
-    username: userData.profile.displayName,
+    username: userData.profile.mongoUsername,
     birthdate: userData.birthdate,
     profilePic_url: userData.profilePic_url || null,
     followers: {
