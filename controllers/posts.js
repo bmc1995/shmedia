@@ -26,8 +26,9 @@ async function getPost(req, res, next) {
 }
 
 async function getPostsByUsers(req, res, next) {
+  console.log(req.body);
   const userIdArr = req.body.userIdArr.map((element) => {
-    return ObjectId(element);
+    return element;
   });
   await PostServices.getPostsByUsers(userIdArr)
     .then((result) => {

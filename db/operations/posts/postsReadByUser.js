@@ -10,7 +10,7 @@ async function postsReadByUsers(idList) {
   return await Connection.client
     .db(process.env.MONGO_DB)
     .collection("posts")
-    .find({ user_id: { $in: idList } })
+    .find({ okta_uid: { $in: idList } })
     .toArray()
     .then((result) => {
       return Promise.resolve(result);
