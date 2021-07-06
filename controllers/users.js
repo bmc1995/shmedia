@@ -21,12 +21,16 @@ async function registerNewUser(req, res, next) {
 }
 //need to get posts? limit to 10, getMore when needed?
 async function getUser(req, res, next) {
-  await UserServices.getUserInfo(req.params.okta_uid)
+  await UserServices.getUserInfo(req.params.username)
     .then((result) => {
       res.json({ result });
     })
     .catch((err) => {
-      res.sendStatus(500) && next(err);
+      console.log(err);
+      //refactor error handling
+      err == "User not found"
+        ? res.sendStatus(404)
+        : res.sendStatus(500) && next(err);
     });
 }
 async function deleteUser(req, res, next) {

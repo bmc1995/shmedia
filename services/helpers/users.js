@@ -19,8 +19,9 @@ function prepareNewUser(userData) {
       pendOut: [],
       current: [],
     },
+    following: [], // following populated at lookup
     bio: null,
-    posts: [], //posts populated by aggregation ($lookup)
+    posts: [], //posts populated at lookup
     location: userData.location || { city: null, state: null },
     okta_id: userData.id,
     private: false,

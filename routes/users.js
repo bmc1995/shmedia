@@ -18,7 +18,7 @@ const {
 router.post("/register", registerNewUser);
 
 //GET user information
-router.get("/:okta_uid", authRequired, getUser);
+router.get("/:username", authRequired, getUser);
 
 //POST delete user
 router.post("/delete/:username", authRequired, deleteUser);
