@@ -2,7 +2,7 @@ const { oktaClient } = require("./client");
 
 async function oktaUpdateUser(id, updatedFields) {
   let updatedCount = 0;
-  const user = await oktaClient.getUser(id);
+  const user = await oktaClient.getUser(id).catch((err) => console.log(err));
 
   for (attr in updatedFields) {
     switch (attr) {
@@ -32,6 +32,7 @@ async function oktaUpdateUser(id, updatedFields) {
       return { res, updatedCount };
     })
     .catch((err) => {
+      console.log(err);
       return err;
     });
 }

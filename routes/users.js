@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { authRequired } = require("../middleware/authRequired");
+const multer = require("multer");
 
 const {
   registerNewUser,
@@ -13,6 +14,7 @@ const {
   userDeclineFollowReq,
   userUnfollow,
 } = require("../controllers/users");
+const formToReq = multer();
 
 /* POST create user */
 router.post("/register", registerNewUser);
@@ -24,7 +26,12 @@ router.get("/:username", authRequired, getUser);
 router.post("/delete/:username", authRequired, deleteUser);
 
 //TODO
-router.post("/edit/:username", authRequired, updateUser);
+router.post(
+  "/edit/:okta_uid",
+  authRequired,
+  formToReq.single("profilePic"),
+  updateUser
+);
 
 router.post("/sendFollowReq", authRequired, userSendFollowReq);
 

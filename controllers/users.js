@@ -1,3 +1,5 @@
+const { uploadtoS3 } = require("../services/aws-s3/uploadToS3");
+const { PostServiceHelpers } = require("../services/helpers");
 const {
   UserServices,
   CommentServices,
@@ -51,14 +53,35 @@ async function deleteUser(req, res, next) {
     });
 }
 // refactor to use oktaId for both.
+
 async function updateUser(req, res, next) {
-  await UserServices.updateUser(req.params.username, req.body.updates)
+  Object.keys(req.body).forEach((k) => {
+    req.body[k] == "null" && delete req.body[k];
+    console.log(k);
+  });
+
+  // return console.log(req.file);
+  //if file is present, upload to s3, then store the url on the body
+  if (req.file) {
+    const preparedData = PostServiceHelpers.prepareS3Upload(req);
+    await uploadtoS3(preparedData)
+      .then((res) => {
+        console.log("s3 :", res);
+        req.body.profilePic_url =
+          "https://shmedia-media.s3.us-west-1.amazonaws.com/" +
+          preparedData.Key;
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(500) && next(err);
+      });
+  }
+
+  await UserServices.updateUser(req.params.okta_uid, req.body)
     .then(async (mongoResult) => {
-      await oktaUpdateUser(req.params.oktaId, req.body.updates).then(
-        (oktaResult) => {
-          res.json({ mongoResult, oktaResult });
-        }
-      );
+      await oktaUpdateUser(req.params.okta_uid, req.body).then((oktaResult) => {
+        res.json({ mongoResult, oktaResult });
+      });
     })
     .catch((err) => {
       res.sendStatus(500) && next(err);
