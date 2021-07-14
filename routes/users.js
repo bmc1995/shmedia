@@ -7,6 +7,7 @@ const multer = require("multer");
 const {
   registerNewUser,
   getUser,
+  getUserMulti,
   deleteUser,
   updateUser,
   userSendFollowReq,
@@ -21,6 +22,8 @@ router.post("/register", registerNewUser);
 
 //GET user information
 router.get("/:username", authRequired, getUser);
+//!!
+router.get("/explore/profiles/", authRequired, getUserMulti);
 
 //POST delete user
 router.post("/delete/:username", authRequired, deleteUser);

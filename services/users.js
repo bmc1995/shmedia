@@ -23,6 +23,16 @@ async function getUserInfo(userData) {
     });
 }
 
+async function getUserInfoMulti(userData) {
+  return await UserDbOps.userReadMulti(userData)
+    .then((result) => {
+      return Promise.resolve(result);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
 async function deleteUser(userData) {
   return await UserDbOps.userDelete(userData)
     .then((result) => {
@@ -87,6 +97,7 @@ module.exports = {
   createUser,
   deleteUser,
   getUserInfo,
+  getUserInfoMulti,
   updateUser,
   sendFollowReq,
   acceptFollowReq,

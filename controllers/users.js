@@ -35,6 +35,21 @@ async function getUser(req, res, next) {
         : res.sendStatus(500) && next(err);
     });
 }
+
+async function getUserMulti(req, res, next) {
+  await UserServices.getUserInfoMulti(req.params.query)
+    .then((result) => {
+      res.json({ result });
+    })
+    .catch((err) => {
+      console.log(err);
+      //refactor error handling
+      err == "No users found."
+        ? res.sendStatus(404)
+        : res.sendStatus(500) && next(err);
+    });
+}
+
 async function deleteUser(req, res, next) {
   await UserServices.deleteUser(req.params.username)
     .then(async (userResult) => {
@@ -143,6 +158,7 @@ async function userUnfollow(req, res, next) {
 module.exports = {
   registerNewUser,
   getUser,
+  getUserMulti,
   deleteUser,
   updateUser,
   userSendFollowReq,
