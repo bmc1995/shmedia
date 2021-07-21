@@ -1,10 +1,10 @@
 const { Connection } = require("../../connection");
 
-async function userRead(username) {
+async function userRead(findBy, value) {
   return await Connection.client
     .db(process.env.MONGO_DB)
     .collection("users")
-    .findOne({ username: username })
+    .findOne(findBy == "name" ? { username: value } : { okta_uid: value })
     .then(async (result) => {
       if (!result) {
         return Promise.reject("User not found");

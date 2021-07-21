@@ -23,7 +23,7 @@ async function registerNewUser(req, res, next) {
 }
 //need to get posts? limit to 10, getMore when needed?
 async function getUser(req, res, next) {
-  await UserServices.getUserInfo(req.params.username)
+  await UserServices.getUserInfo(req.params.findBy, req.params.value)
     .then((result) => {
       res.json({ result });
     })

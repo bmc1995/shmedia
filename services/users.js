@@ -13,8 +13,8 @@ async function createUser(userData) {
     });
 }
 
-async function getUserInfo(userData) {
-  return await UserDbOps.userRead(userData)
+async function getUserInfo(findBy, userData) {
+  return await UserDbOps.userRead(findBy, userData)
     .then((result) => {
       return Promise.resolve(result);
     })

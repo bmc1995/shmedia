@@ -21,7 +21,7 @@ const formToReq = multer();
 router.post("/register", registerNewUser);
 
 //GET user information
-router.get("/:username", authRequired, getUser);
+router.get("/find/:findBy/:value", authRequired, getUser);
 //!!
 router.get("/explore/profiles/", authRequired, getUserMulti);
 
