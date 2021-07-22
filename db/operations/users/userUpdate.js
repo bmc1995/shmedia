@@ -18,7 +18,26 @@ async function userUpdate(okta_uid, updatedFields, okta_id) {
       { returnOriginal: false }
     )
     .then((result) => {
-      return Promise.resolve(result);
+      if (!updatedFields["username"]) return Promise.resolve(result);
+      Connection.client
+        .db(process.env.MONGO_DB)
+        .collection("posts")
+        .updateMany(
+          { okta_uid: okta_uid },
+          { $set: { username: updatedFields["username"] } }
+        )
+        .then((postResult) => {
+          Connection.client
+            .db(process.env.MONGO_DB)
+            .collection("comments")
+            .updateMany(
+              { okta_uid: okta_uid },
+              { $set: { username: updatedFields["username"] } }
+            )
+            .then((commentResult) => {
+              return Promise.resolve({ result, postResult, commentResult });
+            });
+        });
     })
     .catch((err) => {
       console.log(err);

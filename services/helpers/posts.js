@@ -5,6 +5,7 @@ function prepareNewPost(postData) {
 
   return {
     okta_uid: postData.body.okta_uid,
+    username: postData.body.username,
     video: postData.body.video,
     comments: [], //comments populated by aggregation ($lookup)
     media_url: postData.body.media_url || null,
