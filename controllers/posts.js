@@ -1,4 +1,5 @@
 const { ObjectId } = require("bson");
+const { deleteObject } = require("../services/aws-s3/deleteObject");
 const { PostServices, CommentServices } = require("../services/index");
 
 const createPost = async (req, res, next) => {
@@ -54,18 +55,25 @@ async function getPostsByUsers(req, res, next) {
 
 async function deletePost(req, res, next) {
   const post_id = ObjectId(req.params.post_id);
+  const key = req.body.media_url.split("amazonaws.com")[1];
 
-  await CommentServices.deleteCommentsByPost(post_id).then(
-    async (commentResult) => {
-      await PostServices.deletePost(post_id)
-        .then((postResult) => {
-          res.json({ postResult, commentResult });
-        })
-        .catch((err) => {
-          res.sendStatus(500) && next(err);
-        });
-    }
-  );
+  await deleteObject(key)
+    .then(async (s3Result) => {
+      await CommentServices.deleteCommentsByPost(post_id).then(
+        async (commentResult) => {
+          await PostServices.deletePost(post_id)
+            .then((postResult) => {
+              res.json({ s3Result, postResult, commentResult });
+            })
+            .catch((err) => {
+              res.sendStatus(500) && next(err);
+            });
+        }
+      );
+    })
+    .catch((err) => {
+      res.sendStatus(500) && next(err);
+    });
 }
 
 async function updatePost(req, res, next) {
