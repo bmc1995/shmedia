@@ -18,9 +18,9 @@ function authRequired(req, res, next) {
   const authHeader = req.headers.authorization || "";
   const match = authHeader.match(/Bearer (.+)/);
   const expectedAudience = "api://default";
-  if (process.env.NODE_ENV == "test") {
-    return next();
-  }
+  // if (process.env.NODE_ENV == "test") {
+  //   return next();
+  // }
 
   if (!match) {
     res.status(401);

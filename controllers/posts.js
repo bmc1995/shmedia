@@ -16,10 +16,19 @@ const createPost = async (req, res, next) => {
 async function getPost(req, res, next) {
   //need to turn post_id into an ObjectId for mongodb to recognize in search (is string on client-side)
   //make a seperate route for explore
-  const post_id =
-    req.params.post_id == "explore"
-      ? req.params.post_id
-      : ObjectId(req.params.post_id);
+  let post_id;
+
+  //refactor t/c block to util
+  try {
+    post_id =
+      req.params.post_id == "explore"
+        ? req.params.post_id
+        : ObjectId(req.params.post_id);
+  } catch (err) {
+    res.sendStatus(500);
+    return next(err);
+  }
+
   await PostServices.getPost(post_id)
     .then((result) => {
       res.json(result);
